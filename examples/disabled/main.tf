@@ -5,12 +5,6 @@ provider "aws" {
   secret_key = "${var.secret_key}"
 }
 
-resource "random_string" "this" {
-  length  = 8
-  upper   = false
-  special = false
-}
-
 module "disabled" {
   source = "../../"
 
