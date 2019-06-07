@@ -35,5 +35,5 @@ module "standard" {
   kms_key_name       = "/alias/tftest/tftest${random_string.this.result}"
 
   ssm_parameter_enabled = true
-  ssm_parameter_prefix  = "/ssm/tftest${random_string.this.result}"
+  ssm_parameter_prefix  = "/param/tftest${random_string.this.result}"
 }
