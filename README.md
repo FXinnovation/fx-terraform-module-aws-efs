@@ -28,4 +28,21 @@ This module is not to be deployed directly.
 | tags | Tags to be shared among all resources of this module. | map | `{}` | no |
 | throughput\_mode | Throughput mode for the file system. Valid values: ”bursting”, “provisioned”. When using provisioned, also set provisioned_throughput_in_mibps. | string | `"bursting"` | no |
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| efs\_arn | Amazon Resource Name of the file system. |
+| efs\_dns\_name | The DNS name for the filesystem. |
+| efs\_id | The ID that identifies the file system (e.g. fs-ccfc0d65). |
+| efs\_mount\_target\_dns\_names | The DNS names of the mount targets for the given EFS subnets/AZ. |
+| efs\_mount\_target\_ids | The IDs of the EFS mount targets. |
+| efs\_mount\_target\_network\_interface\_ids | The IDs of the network interfaces that Amazon EFS created when it created the mount targets. |
+| kms\_alias\_arn | The Amazon Resource Name (ARN) of the EFS key alias. This output will be empty if the KMS key was passed as variable. |
+| kms\_key\_arn | The Amazon Resource Name (ARN) of the EFS key. This output will be empty if the KMS key was passed as variable. |
+| kms\_key\_id | The globally unique identifier for the EFS key. This output will be empty if the KMS key was passed as variable. |
+| security\_group\_id | ID of the security group used for the EFS. This output will be empty if the security groups IDs were passed as variables. |
+| ssm\_parameter\_arns | The ARNs of the SSM Parameters for the EFS. |
+| ssm\_parameter\_names | The names of the SSM Parameters for the EFS. |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
