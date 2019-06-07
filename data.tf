@@ -7,7 +7,7 @@ data "aws_subnet_ids" "default" {
 }
 
 data "aws_subnet" "default" {
-  id = "${element(concat(var.subnet_ids, list("")), 0) != "" ? element(var.subnet_ids, 0) : element(data.aws_subnet_ids.default.ids, 0)}"
+  id = "${element(concat(var.subnet_ids, list("")), 0) != "" ? element(concat(var.subnet_ids, list("")), 0) : element(concat(data.aws_subnet_ids.default.ids, list("")), 0)}"
 }
 
 locals {
