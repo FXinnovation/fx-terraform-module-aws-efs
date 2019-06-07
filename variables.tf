@@ -24,7 +24,7 @@ variable "subnet_ids_count" {
 
 variable "subnet_ids" {
   description = "IDs of the subnet where the EFS should be made available."
-  type        = "list"
+  default     = []
 }
 
 #####

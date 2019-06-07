@@ -23,7 +23,7 @@ This module is not to be deployed directly.
 | ssm\_parameter\_enabled | Whether or not to create SSM Parameters containing EFS data. | string | `"false"` | no |
 | ssm\_parameter\_prefix | Prefix for the SSM Parameters created by this module. It should an absolute path without trailing slash (e.g /my/example/path). | string | `"/efs/module/default"` | no |
 | ssm\_parameter\_tags | Tags specific for the SSM Parameters for the EFS. Will be merged with tags. | map | `{}` | no |
-| subnet\_ids | IDs of the subnet where the EFS should be made available. | list | n/a | yes |
+| subnet\_ids | IDs of the subnet where the EFS should be made available. | list | `[]` | no |
 | subnet\_ids\_count | Number of subnet IDs in var.subnet_ids. This value cannot be computed automatically in Terraform 0.11.X. | string | `"2"` | no |
 | tags | Tags to be shared among all resources of this module. | map | `{}` | no |
 | throughput\_mode | Throughput mode for the file system. Valid values: ”bursting”, “provisioned”. When using provisioned, also set provisioned_throughput_in_mibps. | string | `"bursting"` | no |
