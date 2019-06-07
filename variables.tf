@@ -12,11 +12,6 @@ variable "tags" {
   default     = {}
 }
 
-//variable "vpc_id" {
-//  description = "ID of the VPC where to create the EFS."
-//  type        = "string"
-//}
-
 variable "subnet_ids_count" {
   description = "Number of subnet IDs in var.subnet_ids. This value cannot be computed automatically in Terraform 0.11.X."
   default     = 2
