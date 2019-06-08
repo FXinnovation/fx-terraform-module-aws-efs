@@ -22,10 +22,6 @@ output "efs_mount_target_ids" {
   value = "${module.with_external_kms_and_sgs.efs_mount_target_ids}"
 }
 
-output "efs_mount_target_dns_names" {
-  value = "${module.with_external_kms_and_sgs.efs_mount_target_dns_names}"
-}
-
 #####
 # KMS
 #####

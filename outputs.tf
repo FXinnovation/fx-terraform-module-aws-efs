@@ -27,11 +27,6 @@ output "efs_mount_target_ids" {
   value       = "${aws_efs_mount_target.this.*.id}"
 }
 
-output "efs_mount_target_dns_names" {
-  description = "The DNS names of the mount targets for the given EFS subnets/AZ."
-  value       = "${aws_efs_mount_target.this.*.dns_name}"
-}
-
 #####
 # KMS
 #####

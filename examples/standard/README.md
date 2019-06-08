@@ -27,7 +27,6 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 | efs\_arn |  |
 | efs\_dns\_name |  |
 | efs\_id |  |
-| efs\_mount\_target\_dns\_names |  |
 | efs\_mount\_target\_ids |  |
 | efs\_mount\_target\_network\_interface\_ids |  |
 | kms\_alias\_arn |  |

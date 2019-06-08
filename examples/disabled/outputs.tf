@@ -22,10 +22,6 @@ output "efs_mount_target_ids" {
   value = "${module.disabled.efs_mount_target_ids}"
 }
 
-output "efs_mount_target_dns_names" {
-  value = "${module.disabled.efs_mount_target_dns_names}"
-}
-
 #####
 # KMS
 #####
