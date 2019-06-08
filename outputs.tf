@@ -66,5 +66,5 @@ output "ssm_parameter_names" {
 
 output "security_group_id" {
   description = "ID of the security group used for the EFS. This output will be empty if the security groups IDs were passed as variables."
-  value       = "${element(concat(aws_security_group_rule.this.*.id, list("")), 0)}"
+  value       = "${element(concat(aws_security_group.this.*.id, list("")), 0)}"
 }
