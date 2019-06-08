@@ -78,7 +78,7 @@ resource "aws_ssm_parameter" "this_efs_id" {
 #####
 
 resource "aws_security_group" "this" {
-  count = "${var.enabled && element(concat(var.security_group_ids, list("")), 0) != "" ? 1 : 0}"
+  count = "${var.enabled && element(concat(var.security_group_ids, list("")), 0) == "" ? 1 : 0}"
 
   name        = "${var.security_group_name}"
   description = "Security group for ${var.name} EFS."
@@ -93,7 +93,7 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_security_group_rule" "this" {
-  count = "${var.enabled && element(concat(var.security_group_ids, list("")), 0) != "" ? length(var.security_group_allowed_cidrs) : 0}"
+  count = "${var.enabled && element(concat(var.security_group_ids, list("")), 0) == "" ? length(var.security_group_allowed_cidrs) : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this.*.id, list("")), 0)}"
 
