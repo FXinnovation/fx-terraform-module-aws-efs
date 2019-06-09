@@ -52,12 +52,12 @@ output "kms_alias_arn" {
 
 output "ssm_parameter_arns" {
   description = "The ARNs of the SSM Parameters for the EFS."
-  value       = ["${element(concat(aws_ssm_parameter.this_efs_id.*.arn, list("")), 0)}"]
+  value       = "${compact(list(element(concat(aws_ssm_parameter.this_efs_id.*.arn, list("")), 0)))}"
 }
 
 output "ssm_parameter_names" {
   description = "The names of the SSM Parameters for the EFS."
-  value       = ["${element(concat(aws_ssm_parameter.this_efs_id.*.name, list("")), 0)}"]
+  value       = "${compact(list(element(concat(aws_ssm_parameter.this_efs_id.*.name, list("")), 0)))}"
 }
 
 #####

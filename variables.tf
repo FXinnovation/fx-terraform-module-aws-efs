@@ -55,8 +55,13 @@ variable "efs_tags" {
 # KMS
 #####
 
+variable "kms_key_create" {
+  description = "Whether or not to create a KMS key. This value cannot be computed automatically in Terraform 0.11.X."
+  default     = true
+}
+
 variable "kms_key_arn" {
-  description = "ARN of the KMS key to be used to encrypt the EFS. When not specified, this module will create a new KMS key."
+  description = "ARN of the KMS key to be used to encrypt the EFS. Should be specified when kms_ke_create is false."
   default     = ""
 }
 
@@ -98,8 +103,13 @@ variable "ssm_parameter_tags" {
 # Security group
 #####
 
+variable "security_group_create" {
+  description = "Whether or not to create a Security Group for the EFS. This value cannot be computed automatically in Terraform 0.11.X."
+  default     = true
+}
+
 variable "security_group_ids" {
-  description = "Security groups to be used by the EFS mount targets. If not specified, this module will create a new security group."
+  description = "Security groups to be used by the EFS mount targets. Should be specified when security_group_create is false."
   default     = []
 }
 
