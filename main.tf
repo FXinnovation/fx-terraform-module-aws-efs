@@ -93,6 +93,10 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_security_group_rule" "this" {
+
+
+
+
   count = "${var.enabled && var.security_group_create ? length(var.security_group_allowed_cidrs) : 0}"
 
   security_group_id = "${element(concat(aws_security_group.this.*.id, list("")), 0)}"
