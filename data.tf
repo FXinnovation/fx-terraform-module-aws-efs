@@ -14,7 +14,7 @@ locals {
 
 
 data "aws_subnet" "default" {
-  id = element(concat(var.subnet_ids, [""]), 0) != "" ? element(concat(var.subnet_ids, [""]), 0) : element(concat(local.subnet_ids_list, [""]), 0)
+  id = length(var.subnet_ids == 0) ? element(concat(var.subnet_ids, list("")), 0) : element(concat(local.subnet_ids_list, list("")), 0)
 }
 
 locals {
