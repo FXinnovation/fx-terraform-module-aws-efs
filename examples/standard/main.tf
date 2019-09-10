@@ -1,8 +1,8 @@
 provider "aws" {
   version    = "> 2.7.0"
   region     = "eu-west-1"
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
 
 resource "random_string" "this" {
@@ -16,8 +16,15 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
 }
+
+# NOTE: This is a workaround https://github.com/terraform-providers/terraform-provider-aws/issues/7522
+locals {
+  subnet_ids_string = join(",", data.aws_subnet_ids.default.ids)
+  subnet_ids_list   = split(",", local.subnet_ids_string)
+}
+
 
 module "standard" {
   source = "../../"
@@ -26,8 +33,8 @@ module "standard" {
     Name = "tftest"
   }
 
-  subnet_ids_count = "${length(data.aws_subnet_ids.default.ids)}"
-  subnet_ids       = "${data.aws_subnet_ids.default.ids}"
+  subnet_ids_count = length(data.aws_subnet_ids.default.ids)
+  subnet_ids       = local.subnet_ids_list
 
   name = "tftest${random_string.this.result}"
 
