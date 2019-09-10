@@ -1,8 +1,8 @@
 provider "aws" {
   version    = "> 2.7.0"
   region     = "eu-west-1"
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
+  access_key = var.access_key
+  secret_key = var.secret_key
 }
 
 resource "random_string" "this" {
@@ -16,12 +16,18 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnet_ids" "default" {
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
+}
+
+# NOTE: This is a workaround https://github.com/terraform-providers/terraform-provider-aws/issues/7522
+locals {
+  subnet_ids_string = join(",", data.aws_subnet_ids.default.ids)
+  subnet_ids_list   = split(",", local.subnet_ids_string)
 }
 
 resource "aws_security_group" "with_external_kms_and_sgs" {
   name   = "tftest-${random_string.this.result}"
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
 }
 
 resource "aws_kms_key" "with_external_kms_and_sgs" {}
@@ -34,13 +40,13 @@ module "with_external_kms_and_sgs" {
   }
 
   subnet_ids_count = 1
-  subnet_ids       = ["${element(data.aws_subnet_ids.default.ids, 0)}"]
+  subnet_ids       = [element(data.aws_subnet_ids.default.ids, 0)]
 
   name = "tftest${random_string.this.result}"
 
   kms_key_create = false
-  kms_key_arn    = "${aws_kms_key.with_external_kms_and_sgs.arn}"
+  kms_key_arn    = aws_kms_key.with_external_kms_and_sgs.arn
 
   security_group_create = false
-  security_group_ids    = ["${aws_security_group.with_external_kms_and_sgs.id}"]
+  security_group_ids    = local.subnet_ids_list
 }
