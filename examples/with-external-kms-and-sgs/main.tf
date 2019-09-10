@@ -40,7 +40,7 @@ module "with_external_kms_and_sgs" {
   }
 
   subnet_ids_count = 1
-  subnet_ids       = [element(data.aws_subnet_ids.default.ids, 0)]
+  subnet_ids       = [element(local.subnet_ids_list, 0)]
 
   name = "tftest${random_string.this.result}"
 
