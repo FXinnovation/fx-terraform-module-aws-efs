@@ -48,5 +48,5 @@ module "with_external_kms_and_sgs" {
   kms_key_arn    = aws_kms_key.with_external_kms_and_sgs.arn
 
   security_group_create = false
-  security_group_ids    = local.subnet_ids_list
+  security_group_ids    = [aws_security_group.with_external_kms_and_sgs.id]
 }
