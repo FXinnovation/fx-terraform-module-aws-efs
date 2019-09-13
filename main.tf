@@ -25,7 +25,7 @@ resource "aws_efs_file_system" "this" {
 }
 
 resource "aws_efs_mount_target" "this" {
-  count = var.enabled && length(var.subnet_ids) > 0 ? length(subnet_ids) : 0
+  count = var.enabled && length(var.subnet_ids) > 0 ? length(var.subnet_ids) : 0
 
   file_system_id = aws_efs_file_system.this[0].id
   subnet_id      = element(var.subnet_ids, count.index)
