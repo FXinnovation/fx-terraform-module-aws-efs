@@ -12,11 +12,12 @@ locals {
   subnet_ids_list   = split(",", local.subnet_ids_string)
 }
 
-
 data "aws_subnet" "default" {
   id = length(var.subnet_ids) == 0 ? element(concat(local.subnet_ids_list, list("")), 0) : element(concat(var.subnet_ids, list("")), 0)
 }
 
 locals {
-  vpc_id = data.aws_subnet.default.vpc_id
+  vpc_id                = data.aws_subnet.default.vpc_id
+  security_group_create = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? true : false
+  kms_key_create        = var.enabled && var.kms_key_arn == "" ? true : false
 }

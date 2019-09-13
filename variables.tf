@@ -12,13 +12,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "subnet_ids_count" {
-  description = "Number of subnet IDs in var.subnet_ids. This value cannot be computed automatically in Terraform 0.11.X."
-  default     = 2
-}
-
 variable "subnet_ids" {
-  description = "IDs of the subnet where the EFS should be made available."
+  description = "IDs of the subnet where the EFS should be made available. If none are specified, it will use subnets from the default vpc."
   default     = []
 }
 
@@ -54,11 +49,6 @@ variable "efs_tags" {
 #####
 # KMS
 #####
-
-variable "kms_key_create" {
-  description = "Whether or not to create a KMS key. This value cannot be computed automatically in Terraform 0.11.X."
-  default     = true
-}
 
 variable "kms_key_arn" {
   description = "ARN of the KMS key to be used to encrypt the EFS. Should be specified when kms_ke_create is false."
@@ -103,33 +93,27 @@ variable "ssm_parameter_tags" {
 # Security group
 #####
 
-variable "security_group_create" {
-  description = "Whether or not to create a Security Group for the EFS. This value cannot be computed automatically in Terraform 0.11.X."
-  default     = true
-}
-
 variable "security_group_ids" {
-  description = "Security groups to be used by the EFS mount targets. Should be specified when security_group_create is false."
+  description = "List of additionnal security group IDs to be used by the EFS mount targets. MUST be specified when no `allowed_cidrs` or `allowed_security_group_ids` is provided."
   default     = []
 }
 
 variable "security_group_name" {
-  description = "Name of the security group to be used by the EFS mount targets."
+  description = "Name of the security group to be used by the EFS mount targets. Security group will be create ONLY IF `allowed_cidrs` or `allowed_security_group_ids` is NOT an empty list."
   default     = "efs"
 }
 
-variable "security_group_allowed_cidrs" {
+variable "allowed_cidrs" {
   description = "CIDRs allowed to access the EFS. Must be a list of object containing “cidr” and “target” (the target of the CIDR)."
+  default     = []
+}
 
-  default = [
-    {
-      cidr   = "10.0.0.0/8"
-      target = "all VPC"
-    },
-  ]
+variable "allowed_security_group_ids" {
+  description = "CIDRs allowed to access the EFS. Must be a list of object containing “cidr” and “target” (the target of the CIDR)."
+  default     = []
 }
 
 variable "security_group_tags" {
-  description = "Tags specific for the Security Group for the EFS mount targets. Will be merged with tags."
+  description = "Additionnal tags specific for the security group for the EFS mount targets. Will be merged with tags."
   default     = {}
 }

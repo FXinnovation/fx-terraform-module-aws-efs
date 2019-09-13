@@ -25,12 +25,12 @@ resource "aws_efs_file_system" "this" {
 }
 
 resource "aws_efs_mount_target" "this" {
-  count = var.enabled && var.subnet_ids_count > 0 ? var.subnet_ids_count : 0
+  count = var.enabled && length(var.subnet_ids) > 0 ? length(subnet_ids) : 0
 
   file_system_id = aws_efs_file_system.this[0].id
   subnet_id      = element(var.subnet_ids, count.index)
 
-  security_groups = var.security_group_create ? list(element(concat(aws_security_group.this.*.id, [""]), 0)) : var.security_group_ids
+  security_groups = concat(aws_security_group.this.*.id, var.security_group_ids)
 }
 
 #####
@@ -38,7 +38,7 @@ resource "aws_efs_mount_target" "this" {
 #####
 
 resource "aws_kms_key" "this" {
-  count = var.enabled && var.kms_key_create ? 1 : 0
+  count = local.kms_key_create ? 1 : 0
 
   description = "KMS Key for ${var.name} EFS encryption."
 
@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "this_efs_id" {
 #####
 
 resource "aws_security_group" "this" {
-  count = var.enabled && var.security_group_create ? 1 : 0
+  count = local.security_group_create ? 1 : 0
 
   name        = var.security_group_name
   description = "Security group for ${var.name} EFS."
@@ -106,8 +106,8 @@ resource "aws_security_group" "this" {
   )
 }
 
-resource "aws_security_group_rule" "this" {
-  count = var.enabled && var.security_group_create ? length(var.security_group_allowed_cidrs) : 0
+resource "aws_security_group_rule" "this_cidrs" {
+  count = local.security_group_create ? length(var.allowed_cidrs) : 0
 
   security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
 
@@ -115,14 +115,19 @@ resource "aws_security_group_rule" "this" {
   from_port   = 2049
   to_port     = 2049
   protocol    = "tcp"
-  description = "NFS from ${var.security_group_allowed_cidrs[count.index]["target"]}."
-  # TF-UPGRADE-TODO: In Terraform v0.10 and earlier, it was sometimes necessary to
-  # force an interpolation expression to be interpreted as a list by wrapping it
-  # in an extra set of list brackets. That form was supported for compatibility in
-  # v0.11, but is no longer supported in Terraform v0.12.
-  #
-  # If the expression in the following list itself returns a list, remove the
-  # brackets to avoid interpretation as a list of lists. If the expression
-  # returns a single list item then leave it as-is and remove this TODO comment.
-  cidr_blocks = [var.security_group_allowed_cidrs[count.index]["cidr"]]
+  description = "NFS from ${element(var.allowed_cidrs, count.index)}."
+  cidr_blocks = [var.allowed_cidrs[count.index]]
+}
+
+resource "aws_security_group_rule" "this_security_groups" {
+  count = local.security_group_create ? length(var.allowed_security_group_ids) : 0
+
+  security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
+
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  description              = "NFS from ${element(var.allowed_security_group_ids, count.index)}."
+  source_security_group_id = [var.allowed_security_group_ids[count.index]]
 }
