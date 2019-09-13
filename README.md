@@ -12,7 +12,8 @@ This module is not to be deployed directly.
 | efs\_tags | Tags specific for the EFS. Will be merged with tags. | map | `{}` | no |
 | enabled | Whether or not to enable this entire module or not. | string | `"true"` | no |
 | kms\_key\_alias\_name | Name of the KMS key alias to be used to encrypt the EFS. | string | `"alias/efs"` | no |
-| kms\_key\_arn | ARN of the KMS key to be used to encrypt the EFS. Should be specified when kms_ke_create is false. | string | `"null"` | no |
+| kms\_key\_arn | ARN of the KMS key to be used to encrypt the EFS. Should be specified when kms_key_create is false. | string | `""` | no |
+| kms\_key\_create | Wheter or not it is needed to create the KMS key for the EFS. | string | `"true"` | no |
 | kms\_key\_name | Name of the KMS key to be used to encrypt the EFS. | string | `"efs"` | no |
 | kms\_tags | Tags specific for the KMS key for the EFS. Will be merged with tags. | map | `{}` | no |
 | name | Name of the EFS. | string | `"efs"` | no |

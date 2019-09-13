@@ -6,7 +6,7 @@ resource "aws_efs_file_system" "this" {
   count = var.enabled ? 1 : 0
 
   encrypted  = true
-  kms_key_id = var.enabled && var.kms_key_arn == "" ? element(concat(aws_kms_key.this.*.arn, [""]), 0) : var.kms_key_arn
+  kms_key_id = var.enabled && var.kms_key_create ? element(concat(aws_kms_key.this.*.arn, [""]), 0) : var.kms_key_arn
 
   provisioned_throughput_in_mibps = var.provisioned_throughput_in_mibps
   performance_mode                = var.performance_mode
@@ -38,7 +38,7 @@ resource "aws_efs_mount_target" "this" {
 #####
 
 resource "aws_kms_key" "this" {
-  count = var.enabled && var.kms_key_arn == null ? 1 : 0
+  count = var.enabled && var.kms_key_create ? 1 : 0
 
   description = "KMS Key for ${var.name} EFS encryption."
 
@@ -55,7 +55,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "this" {
-  count = var.enabled && var.kms_key_arn == null ? 1 : 0
+  count = var.enabled && var.kms_key_create ? 1 : 0
 
   name          = var.kms_key_alias_name
   target_key_id = aws_kms_key.this[0].key_id
