@@ -33,13 +33,14 @@ module "standard" {
     Name = "tftest"
   }
 
-  subnet_ids_count = length(data.aws_subnet_ids.default.ids)
-  subnet_ids       = local.subnet_ids_list
+  subnet_ids = local.subnet_ids_list
 
   name = "tftest${random_string.this.result}"
 
   kms_key_alias_name = "alias/tftest/${random_string.this.result}"
   kms_key_name       = "tftest${random_string.this.result}"
+
+  allowed_cidrs = ["10.0.0.0/8"]
 
   ssm_parameter_enabled = true
   ssm_parameter_prefix  = "/param/tftest${random_string.this.result}"

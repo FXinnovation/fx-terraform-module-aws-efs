@@ -39,14 +39,11 @@ module "with_external_kms_and_sgs" {
     Name = "tftest"
   }
 
-  subnet_ids_count = 1
-  subnet_ids       = [element(local.subnet_ids_list, 0)]
+  subnet_ids = [element(local.subnet_ids_list, 0)]
 
   name = "tftest${random_string.this.result}"
 
-  kms_key_create = false
-  kms_key_arn    = aws_kms_key.with_external_kms_and_sgs.arn
+  kms_key_arn = aws_kms_key.with_external_kms_and_sgs.arn
 
-  security_group_create = false
-  security_group_ids    = [aws_security_group.with_external_kms_and_sgs.id]
+  security_group_ids = [aws_security_group.with_external_kms_and_sgs.id]
 }
