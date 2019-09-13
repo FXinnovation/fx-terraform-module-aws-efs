@@ -52,7 +52,8 @@ variable "efs_tags" {
 
 variable "kms_key_arn" {
   description = "ARN of the KMS key to be used to encrypt the EFS. Should be specified when kms_ke_create is false."
-  default     = ""
+  default     = null
+  type        = string
 }
 
 variable "kms_key_alias_name" {

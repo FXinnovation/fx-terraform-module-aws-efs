@@ -38,7 +38,7 @@ resource "aws_efs_mount_target" "this" {
 #####
 
 resource "aws_kms_key" "this" {
-  count = var.enabled && var.kms_key_arn == "" ? 1 : 0
+  count = var.enabled && var.kms_key_arn == null ? 1 : 0
 
   description = "KMS Key for ${var.name} EFS encryption."
 
@@ -55,7 +55,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "this" {
-  count = var.enabled && var.kms_key_arn == "" ? 1 : 0
+  count = var.enabled && var.kms_key_arn == null ? 1 : 0
 
   name          = var.kms_key_alias_name
   target_key_id = aws_kms_key.this[0].key_id
