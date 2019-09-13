@@ -6,7 +6,7 @@ resource "aws_efs_file_system" "this" {
   count = var.enabled ? 1 : 0
 
   encrypted  = true
-  kms_key_id = local.kms_key_create ? element(concat(aws_kms_key.this.*.arn, [""]), 0) : var.kms_key_arn
+  kms_key_id = var.enabled && var.kms_key_arn == "" ? element(concat(aws_kms_key.this.*.arn, [""]), 0) : var.kms_key_arn
 
   provisioned_throughput_in_mibps = var.provisioned_throughput_in_mibps
   performance_mode                = var.performance_mode
@@ -38,7 +38,7 @@ resource "aws_efs_mount_target" "this" {
 #####
 
 resource "aws_kms_key" "this" {
-  count = local.kms_key_create ? 1 : 0
+  count = var.enabled && var.kms_key_arn == "" ? 1 : 0
 
   description = "KMS Key for ${var.name} EFS encryption."
 
@@ -55,7 +55,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_kms_alias" "this" {
-  count = var.enabled && local.kms_key_create ? 1 : 0
+  count = var.enabled && var.kms_key_arn == "" ? 1 : 0
 
   name          = var.kms_key_alias_name
   target_key_id = aws_kms_key.this[0].key_id
@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "this_efs_id" {
 #####
 
 resource "aws_security_group" "this" {
-  count = local.security_group_create ? 1 : 0
+  count = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? 1 : 0
 
   name        = var.security_group_name
   description = "Security group for ${var.name} EFS."
@@ -107,7 +107,7 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_security_group_rule" "this_cidrs" {
-  count = local.security_group_create ? length(var.allowed_cidrs) : 0
+  count = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? length(var.allowed_cidrs) : 0
 
   security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
 
@@ -120,7 +120,7 @@ resource "aws_security_group_rule" "this_cidrs" {
 }
 
 resource "aws_security_group_rule" "this_security_groups" {
-  count = local.security_group_create ? length(var.allowed_security_group_ids) : 0
+  count = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? length(var.allowed_security_group_ids) : 0
 
   security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
 

@@ -17,7 +17,5 @@ data "aws_subnet" "default" {
 }
 
 locals {
-  vpc_id                = data.aws_subnet.default.vpc_id
-  security_group_create = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? true : false
-  kms_key_create        = var.enabled && var.kms_key_arn == "" ? true : false
+  vpc_id = data.aws_subnet.default.vpc_id
 }
