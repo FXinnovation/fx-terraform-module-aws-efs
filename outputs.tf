@@ -77,7 +77,7 @@ output "security_group_id" {
   value       = element(concat(aws_security_group.this.*.id, [""]), 0)
 }
 
-output "security_rule_ids" {
-  description = "IDs of the security rules added to security group"
+output "security_group_rule_ids" {
+  description = "List of ID's of the security rules added to security group"
   value       = concat(aws_security_group_rule.this_cidrs.*.id, aws_security_group_rule.this_security_groups.*.id)
 }

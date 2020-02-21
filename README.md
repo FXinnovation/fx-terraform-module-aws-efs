@@ -48,7 +48,7 @@ This module is not to be deployed directly.
 | kms\_key\_arn | The Amazon Resource Name (ARN) of the EFS key. This output will be empty if the KMS key was passed as variable. |
 | kms\_key\_id | The globally unique identifier for the EFS key. This output will be empty if the KMS key was passed as variable. |
 | security\_group\_id | ID of the security group used for the EFS. This output will be empty if the security groups IDs were passed as variables. |
-| security\_rule\_ids | IDs of the security rules added to security group |
+| security\_group\_rule\_ids | List of ID's of the security rules added to security group |
 | ssm\_parameter\_arns | The ARNs of the SSM Parameters for the EFS. |
 | ssm\_parameter\_names | The names of the SSM Parameters for the EFS. |
 
