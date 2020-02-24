@@ -76,3 +76,8 @@ output "security_group_id" {
   description = "ID of the security group used for the EFS. This output will be empty if the security groups IDs were passed as variables."
   value       = element(concat(aws_security_group.this.*.id, [""]), 0)
 }
+
+output "security_group_rule_ids" {
+  description = "List of ID's of the security rules added to security group"
+  value       = concat(aws_security_group_rule.this_cidrs.*.id, aws_security_group_rule.this_security_groups.*.id)
+}
