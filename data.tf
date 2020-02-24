@@ -1,21 +1,21 @@
 data "aws_vpc" "default" {
+  count = 0 == length(var.subnet_ids) ? 1 : 0
+
   default = true
 }
 
 data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
+  count = 0 == length(var.subnet_ids) ? 1 : 0
 
-# NOTE: This is a workaround https://github.com/terraform-providers/terraform-provider-aws/issues/7522
-locals {
-  subnet_ids_string = join(",", data.aws_subnet_ids.default.ids)
-  subnet_ids_list   = split(",", local.subnet_ids_string)
+  vpc_id = element(concat(data.aws_vpc.default.*.id, [""]), 0)
 }
 
 data "aws_subnet" "default" {
-  id = length(var.subnet_ids) == 0 ? element(concat(local.subnet_ids_list, list("")), 0) : element(concat(var.subnet_ids, list("")), 0)
+  id = 0 == length(var.subnet_ids) ? element(concat(local.subnet_ids_list, list("")), 0) : element(concat(var.subnet_ids, list("")), 0)
 }
 
 locals {
-  vpc_id = data.aws_subnet.default.vpc_id
+  subnet_ids_string = 0 == length(var.subnet_ids) ? join(",", element(concat(tolist(data.aws_subnet_ids.default.*.ids), list("")), 0)) : ""
+  subnet_ids_list   = split(",", local.subnet_ids_string)
+  vpc_id            = data.aws_subnet.default.vpc_id
 }

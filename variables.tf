@@ -15,6 +15,7 @@ variable "tags" {
 variable "subnet_ids" {
   description = "IDs of the subnet where the EFS should be made available. If none are specified, it will be deployed in the default vpc WITHOUT mount targets."
   default     = []
+  type        = list(string)
 }
 
 #####

@@ -7,7 +7,7 @@ This module is not to be deployed directly.
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| aws | >= 2.7.0 |
 
 ## Inputs
 
@@ -31,7 +31,7 @@ This module is not to be deployed directly.
 | ssm\_parameter\_enabled | Whether or not to create SSM Parameters containing EFS data. | `bool` | `false` | no |
 | ssm\_parameter\_prefix | Prefix for the SSM Parameters created by this module. It should an absolute path without trailing slash (e.g /my/example/path). | `string` | `"/efs/module/default"` | no |
 | ssm\_parameter\_tags | Tags specific for the SSM Parameters for the EFS. Will be merged with tags. | `map` | `{}` | no |
-| subnet\_ids | IDs of the subnet where the EFS should be made available. If none are specified, it will be deployed in the default vpc WITHOUT mount targets. | `list` | `[]` | no |
+| subnet\_ids | IDs of the subnet where the EFS should be made available. If none are specified, it will be deployed in the default vpc WITHOUT mount targets. | `list(string)` | `[]` | no |
 | tags | Tags to be shared among all resources of this module. | `map` | `{}` | no |
 | throughput\_mode | Throughput mode for the file system. Valid values: ”bursting”, “provisioned”. When using provisioned, also set provisioned\_throughput\_in\_mibps. | `string` | `"bursting"` | no |
 
