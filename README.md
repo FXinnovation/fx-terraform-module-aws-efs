@@ -3,6 +3,13 @@
 This module is not to be deployed directly.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| aws | >= 2.7.0 |
+
 ## Providers
 
 | Name | Version |
@@ -12,7 +19,7 @@ This module is not to be deployed directly.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
 | allowed\_cidrs | CIDRs allowed to access the EFS. Must be a list of object containing “cidr” and “target” (the target of the CIDR). | `list` | `[]` | no |
 | allowed\_security\_group\_ids | CIDRs allowed to access the EFS. Must be a list of object containing “cidr” and “target” (the target of the CIDR). | `list` | `[]` | no |
 | efs\_tags | Tags specific for the EFS. Will be merged with tags. | `map` | `{}` | no |
@@ -22,6 +29,7 @@ This module is not to be deployed directly.
 | kms\_key\_create | Wheter or not it is needed to create the KMS key for the EFS. | `bool` | `true` | no |
 | kms\_key\_name | Name of the KMS key to be used to encrypt the EFS. | `string` | `"efs"` | no |
 | kms\_tags | Tags specific for the KMS key for the EFS. Will be merged with tags. | `map` | `{}` | no |
+| lifecycle\_policy | Lifecycle policy | `list(string)` | `[]` | no |
 | name | Name of the EFS. | `string` | `"efs"` | no |
 | performance\_mode | The file system performance mode. Can be either ”generalPurpose” or “maxIO”. | `string` | `"generalPurpose"` | no |
 | provisioned\_throughput\_in\_mibps | The throughput, measured in MiB/s, that you want to provision for the file system. Only applicable with throughput\_mode set to “provisioned”. | `number` | `0` | no |
