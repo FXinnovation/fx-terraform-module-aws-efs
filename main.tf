@@ -12,6 +12,14 @@ resource "aws_efs_file_system" "this" {
   performance_mode                = var.performance_mode
   throughput_mode                 = var.throughput_mode
 
+  dynamic "lifecycle_policy" {
+    for_each = var.lifecycle_policy
+
+    content {
+      transition_to_ia = lifecycle_policy.value
+    }
+  }
+
   tags = merge(
     {
       "Terraform" = "true"
@@ -109,20 +117,23 @@ resource "aws_security_group" "this" {
 resource "aws_security_group_rule" "this_cidrs" {
   count = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? length(var.allowed_cidrs) : 0
 
-  security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
+  security_group_id = element(concat(aws_security_group.this.*.id, [
+  ""]), 0)
 
   type        = "ingress"
   from_port   = 2049
   to_port     = 2049
   protocol    = "tcp"
   description = "NFS from ${element(var.allowed_cidrs, count.index)}."
-  cidr_blocks = [var.allowed_cidrs[count.index]]
+  cidr_blocks = [
+  var.allowed_cidrs[count.index]]
 }
 
 resource "aws_security_group_rule" "this_security_groups" {
   count = var.enabled && (var.allowed_cidrs != [] || var.allowed_security_group_ids != []) ? length(var.allowed_security_group_ids) : 0
 
-  security_group_id = element(concat(aws_security_group.this.*.id, [""]), 0)
+  security_group_id = element(concat(aws_security_group.this.*.id, [
+  ""]), 0)
 
   type                     = "ingress"
   from_port                = 2049

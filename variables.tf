@@ -7,6 +7,12 @@ variable "enabled" {
   default     = true
 }
 
+variable "lifecycle_policy" {
+  description = "Lifecycle policy"
+  type        = list(string)
+  default     = []
+}
+
 variable "tags" {
   description = "Tags to be shared among all resources of this module."
   default     = {}
