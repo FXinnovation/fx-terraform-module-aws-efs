@@ -35,7 +35,8 @@ module "standard" {
 
   subnet_ids = local.subnet_ids_list
 
-  name = "tftest${random_string.this.result}"
+  name                = "tftest${random_string.this.result}"
+  security_group_name = "tftest${random_string.this.result}"
 
   kms_key_alias_name = "alias/tftest/${random_string.this.result}"
   kms_key_name       = "tftest${random_string.this.result}"
