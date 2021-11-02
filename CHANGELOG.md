@@ -1,3 +1,9 @@
+3.0.0 / 2021-11-02
+==================
+
+  * (BREAKING) feat: replace deprecated list function by explicit empty lists
+  * chore: fix pre-commit
+
 2.1.2 / 2020-11-05
 ==================
 
