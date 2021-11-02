@@ -43,7 +43,8 @@ module "with_external_kms_and_sgs" {
 
   name = "tftest${random_string.this.result}"
 
-  kms_key_arn = aws_kms_key.with_external_kms_and_sgs.arn
+  kms_key_arn        = aws_kms_key.with_external_kms_and_sgs.arn
+  kms_key_alias_name = "alias/tftest/${random_string.this.result}"
 
   security_group_ids = [aws_security_group.with_external_kms_and_sgs.id]
 }
