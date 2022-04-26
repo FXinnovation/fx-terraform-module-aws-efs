@@ -1,4 +1,16 @@
-3.0.0 / 2021-11-02
+
+3.0.0 / 2022-04-27
+==================
+
+  * (BREAKING) feat: replace deprecated resource aws_subnet_ids
+  * chore: convert dazzlingwrench gitea url to fxi github enterprise url
+
+2.3.0 / 2021-11-03
+==================
+
+  * fix: specify random alias in example to avoid errors during build
+
+2.2.0 / 2021-11-02
 ==================
 
   * (BREAKING) feat: replace deprecated list function by explicit empty lists

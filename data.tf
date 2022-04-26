@@ -4,10 +4,13 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
+data "aws_subnets" "default" {
   count = 0 == length(var.subnet_ids) ? 1 : 0
 
-  vpc_id = element(concat(data.aws_vpc.default.*.id, [""]), 0)
+  filter {
+    name   = "vpc-id"
+    values = [element(concat(data.aws_vpc.default.*.id, [""]), 0)]
+  }
 }
 
 data "aws_subnet" "default" {
@@ -15,7 +18,7 @@ data "aws_subnet" "default" {
 }
 
 locals {
-  subnet_ids_string = 0 == length(var.subnet_ids) ? join(",", element(concat(tolist(data.aws_subnet_ids.default.*.ids), []), 0)) : ""
+  subnet_ids_string = 0 == length(var.subnet_ids) ? join(",", element(concat(tolist(data.aws_subnets.default.*.ids), []), 0)) : ""
   subnet_ids_list   = split(",", local.subnet_ids_string)
   vpc_id            = data.aws_subnet.default.vpc_id
 }
