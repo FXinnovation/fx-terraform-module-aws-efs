@@ -1,5 +1,4 @@
 provider "aws" {
-  version    = "> 2.7.0"
   region     = "eu-west-1"
   access_key = var.access_key
   secret_key = var.secret_key
@@ -15,13 +14,16 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 # NOTE: This is a workaround https://github.com/terraform-providers/terraform-provider-aws/issues/7522
 locals {
-  subnet_ids_string = join(",", data.aws_subnet_ids.default.ids)
+  subnet_ids_string = join(",", data.aws_subnets.default.ids)
   subnet_ids_list   = split(",", local.subnet_ids_string)
 }
 
